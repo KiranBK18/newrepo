@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: 'https://github.com/KiranBK18/newrepo.git'
     targetRevision: HEAD
-    
+    path: nginx
   syncPolicy:
     automated:
       prune: true
