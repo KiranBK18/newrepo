@@ -1,13 +1,14 @@
+{{- if .Values.useRollout }}
 apiVersion: apps/v1
-kind: Deployment
+kind: Rollout
 metadata:
   name: {{ include "nginx.fullname" . }}
   labels:
     {{- include "nginx.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
+ 
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
+ 
   selector:
     matchLabels:
       {{- include "nginx.selectorLabels" . | nindent 6 }}
@@ -76,3 +77,15 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  strategy:
+    canary:
+      steps:
+        - setWeight: 20
+        - pause: { duration: 30s }
+        - setWeight: 50
+        - pause: { duration: 30s }
+        - setWeight: 100
+{{- else }}
+# fallback to regular Deployment if not using Rollout
+# (paste your original Deployment here, optionally wrapped in {{- else }} and {{- end }})
+{{- end }}

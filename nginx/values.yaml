@@ -118,3 +118,4 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+useRollout: true
